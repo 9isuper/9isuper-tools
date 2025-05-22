@@ -1,0 +1,92 @@
+{
+  "name": "9isuper-tools",
+  "version": "1.0.0",
+  "private": true,
+  "description": "我的工具",
+  "templateInfo": {
+    "name": "default",
+    "typescript": true,
+    "css": "Sass",
+    "framework": "Vue3"
+  },
+  "scripts": {
+    "build:weapp": "taro build --type weapp",
+    "build:swan": "taro build --type swan",
+    "build:alipay": "taro build --type alipay",
+    "build:tt": "taro build --type tt",
+    "build:h5": "taro build --type h5",
+    "build:rn": "taro build --type rn",
+    "build:qq": "taro build --type qq",
+    "build:jd": "taro build --type jd",
+    "build:harmony-hybrid": "taro build --type harmony-hybrid",
+    "dev:weapp": "taro build --type weapp --watch",
+    "dev:swan": "taro build --type swan --watch",
+    "dev:alipay": "taro build --type alipay --watch",
+    "dev:tt": "taro build --type tt --watch",
+    "dev:h5": "taro build --type h5 --watch",
+    "dev:rn": "taro build --type rn --watch",
+    "dev:qq": "taro build --type qq --watch",
+    "dev:jd": "taro build --type jd --watch",
+    "dev:harmony-hybrid": "taro build --type harmony-hybrid --watch"
+  },
+  "browserslist": {
+    "development": [
+      "defaults and fully supports es6-module",
+      "maintained node versions"
+    ],
+    "production": [
+      "last 3 versions",
+      "Android >= 4.1",
+      "ios >= 8"
+    ]
+  },
+  "author": "",
+  "dependencies": {
+    "@babel/runtime": "^7.24.4",
+    "@tarojs/components": "4.1.1",
+    "@tarojs/helper": "4.1.1",
+    "@tarojs/plugin-framework-vue3": "4.1.1",
+    "@tarojs/plugin-platform-alipay": "4.1.1",
+    "@tarojs/plugin-platform-h5": "4.1.1",
+    "@tarojs/plugin-platform-harmony-hybrid": "4.1.1",
+    "@tarojs/plugin-platform-jd": "4.1.1",
+    "@tarojs/plugin-platform-qq": "4.1.1",
+    "@tarojs/plugin-platform-swan": "4.1.1",
+    "@tarojs/plugin-platform-tt": "4.1.1",
+    "@tarojs/plugin-platform-weapp": "4.1.1",
+    "@tarojs/runner-utils": "^4.1.1",
+    "@tarojs/runtime": "4.1.1",
+    "@tarojs/service": "^4.1.1",
+    "@tarojs/shared": "4.1.1",
+    "@tarojs/taro": "4.1.1",
+    "vue": "^3.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.4",
+    "@babel/plugin-transform-class-properties": "7.25.9",
+    "@tarojs/cli": "4.1.1",
+    "@tarojs/taro-loader": "4.1.1",
+    "@tarojs/test-utils-vue3": "^0.1.1",
+    "@tarojs/webpack5-runner": "4.1.1",
+    "@types/graceful-fs": "^4",
+    "@types/node": "^18",
+    "@types/webpack-env": "^1.13.6",
+    "@vue/babel-plugin-jsx": "^1.2.2",
+    "@vue/compiler-sfc": "^3.0.0",
+    "babel-preset-taro": "4.1.1",
+    "css-loader": "^7.1.1",
+    "eslint": "^8.57.0",
+    "eslint-config-taro": "4.1.1",
+    "eslint-plugin-vue": "^9.17.0",
+    "graceful-fs": "^4.2.11",
+    "postcss": "^8.4.38",
+    "sass": "^1.75.0",
+    "style-loader": "^3.3.4",
+    "stylelint": "^16.4.0",
+    "tsconfig-paths-webpack-plugin": "^4.1.0",
+    "typescript": "^5.4.5",
+    "vue-loader": "^17.4.2",
+    "webpack": "5.91.0"
+  },
+  "packageManager": "yarn@4.1.1+sha512.ec40d0639bb307441b945d9467139cbb88d14394baac760b52eca038b330d16542d66fef61574271534ace5a200518dabf3b53a85f1f9e4bfa37141b538a9590"
+}
