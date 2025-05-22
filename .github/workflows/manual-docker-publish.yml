@@ -60,4 +60,3 @@ jobs:
           tags: ${{ github.event.inputs.docker_hub_repo }}:${{ github.event.inputs.image_tag }}
           build-args: |
             NODE_ENV=production
-            SKIP_BUILD=${{ github.event.inputs.build_in_action == 'false' }}
