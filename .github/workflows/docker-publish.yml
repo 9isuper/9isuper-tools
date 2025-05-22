@@ -6,7 +6,7 @@ on:
     tags: [ 'v*' ]
 
 env:
-  DOCKER_HUB_REPOSITORY: your-dockerhub-username/9isuper-tools
+  DOCKER_HUB_REPOSITORY: 9isuper/9isuper-tools
   DOCKER_IMAGE_TAG: latest
 
 jobs:
