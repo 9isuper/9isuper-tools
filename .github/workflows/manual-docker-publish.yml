@@ -1,0 +1,63 @@
+name: Manual Docker Build and Push
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Docker image tag'
+        required: true
+        default: 'latest'
+      docker_hub_repo:
+        description: 'Docker Hub repository (username/repo)'
+        required: true
+        default: 'your-dockerhub-username/9isuper-tools'
+      build_in_action:
+        description: 'Build project in GitHub Actions'
+        required: true
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+        if: ${{ github.event.inputs.build_in_action == 'true' }}
+
+      - name: Install dependencies
+        run: npm install
+        if: ${{ github.event.inputs.build_in_action == 'true' }}
+
+      - name: Build project
+        run: npm run build:h5
+        if: ${{ github.event.inputs.build_in_action == 'true' }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ github.event.inputs.docker_hub_repo }}:${{ github.event.inputs.image_tag }}
+          build-args: |
+            NODE_ENV=production
+            SKIP_BUILD=${{ github.event.inputs.build_in_action == 'false' }}
