@@ -5,7 +5,7 @@ FROM node:18 AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm install --legacy-peer-deps
-RUN npm install @tarojs/plugin-framework-react @tarojs/binding-linux-x64
+RUN npm install @tarojs/plugin-framework-react @tarojs/binding-linux-x64 --legacy-peer-deps
 COPY . .
 RUN npm run build:h5
 
