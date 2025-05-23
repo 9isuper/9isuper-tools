@@ -17,9 +17,6 @@ on:
         required: true
         default: 'your-dockerhub-username/9isuper-tools'
 
-env:
-  MINOR_VERSION_COUNTER: ${{ github.event.inputs.reset_minor == 'true' && '0' || (github.event.inputs.reset_minor == 'false' && (steps.minor_version.outputs.value || '0')) }}
-
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -28,30 +25,33 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 获取或初始化副版本号
-      - name: Get or initialize minor version
-        id: minor_version
+      # 初始化版本号
+      - name: Initialize version
+        id: version
         run: |
+          # 获取当前副版本号
+          CURRENT_MINOR=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/variables" \
+            | jq -r '.variables[] | select(.name == "MINOR_VERSION") | .value' || echo "0")
+          
+          # 处理重置逻辑
           if [ "${{ github.event.inputs.reset_minor }}" = "true" ]; then
-            echo "value=0" >> $GITHUB_OUTPUT
+            NEW_MINOR=0
           else
-            # 尝试从GitHub API获取当前副版本号
-            MINOR=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              "https://api.github.com/repos/${{ github.repository }}/actions/variables" \
-              | jq -r '.variables[] | select(.name == "MINOR_VERSION") | .value' || echo "0")
-            # 副版本号+1
-            MINOR=$((MINOR + 1))
-            echo "value=$MINOR" >> $GITHUB_OUTPUT
+            NEW_MINOR=$((CURRENT_MINOR + 1))
           fi
+          
+          # 设置输出
+          echo "major=${{ github.event.inputs.major_version }}" >> $GITHUB_OUTPUT
+          echo "minor=$NEW_MINOR" >> $GITHUB_OUTPUT
+          echo "full_version=${{ github.event.inputs.major_version }}.$NEW_MINOR" >> $GITHUB_OUTPUT
 
-      # 更新GitHub环境变量
-      - name: Update minor version variable
-        run: |
+          # 更新变量
           curl -s -X POST \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/${{ github.repository }}/actions/variables" \
-            -d '{"name":"MINOR_VERSION","value":"${{ steps.minor_version.outputs.value }}"}' \
+            -d '{"name":"MINOR_VERSION","value":"'$NEW_MINOR'"}' \
             || echo "Failed to update variable, continuing..."
 
       - name: Set up Node.js
@@ -82,6 +82,6 @@ jobs:
           push: true
           tags: |
             ${{ github.event.inputs.docker_hub_repo }}:latest
-            ${{ github.event.inputs.docker_hub_repo }}:${{ github.event.inputs.major_version }}.${{ steps.minor_version.outputs.value }}
+            ${{ github.event.inputs.docker_hub_repo }}:${{ steps.version.outputs.full_version }}
           build-args: |
             NODE_ENV=production
