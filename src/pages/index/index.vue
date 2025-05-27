@@ -51,16 +51,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import Taro from '@tarojs/taro'
+import { useUserStore } from '../../stores/user'
 
-const username = ref('用户')
+const userStore = useUserStore()
 const currentDate = ref('')
 
-onMounted(() => {
+onMounted(async () => {
+  // 检查登录状态，但不强制跳转
+  await userStore.checkLogin()
+  
   const date = new Date()
   currentDate.value = `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`
 })
+
+// 修改用户名显示
+const username = computed(() => userStore.userInfo?.name || '游客')
 
 const navigateToCheckin = () => {
   Taro.navigateTo({

@@ -45,6 +45,14 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import Taro from '@tarojs/taro'
+import { useUserStore } from '../../stores/user'
+
+// 添加组件名称
+defineOptions({
+  name: 'CheckinPage'
+})
+
+const userStore = useUserStore()
 
 const currentYear = ref(new Date().getFullYear())
 const currentMonth = ref(new Date().getMonth() + 1)
@@ -73,6 +81,15 @@ const handleCheckin = () => {
     icon: 'success'
   })
 }
+
+onMounted(async () => {
+  const isLoggedIn = await userStore.checkLogin()
+  if (!isLoggedIn) {
+    Taro.navigateTo({
+      url: '/pages/login/index'
+    })
+  }
+})
 </script>
 
 <style lang="scss">
