@@ -45,7 +45,7 @@ jobs:
         run: npm install -g wrangler
 
       - name: 构建项目
-        run: npm install --legacy-peer-deps && npm run build
+        run: npm install --legacy-peer-deps && npm install @tarojs/plugin-framework-react --legacy-peer-deps && npm run build:h5
 
       - name: 发布到 Cloudflare Pages
         run: npx wrangler pages deploy ./dist --project-name=tools --branch=main
