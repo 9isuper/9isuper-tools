@@ -34,3 +34,21 @@ jobs:
           tags: ${{ env.DOCKER_HUB_REPOSITORY }}:${{ env.DOCKER_IMAGE_TAG }}
           build-args: |
             NODE_ENV=production
+
+  deploy-to-cloudflare-pages:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: 安装 Wrangler
+        run: npm install -g wrangler
+
+      - name: 构建项目
+        run: npm install && npm run build
+
+      - name: 发布到 Cloudflare Pages
+        run: npx wrangler pages deploy ./dist --project-name=<你的Pages项目名> --branch=main
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
